@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+    <style>
+        /* General Layout */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #2c3e50;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .calculator {
+            background-color: #ecf0f1;
+            padding: 20px;
+            /* Increased bottom padding slightly to accommodate watermark nicely */
+            padding-bottom: 15px; 
+            border-radius: 20px;
+            box-shadow: 0px 15px 35px rgba(0,0,0,0.3);
+            width: 320px;
+            /* Ensure relative positioning for any absolute children if needed later */
+            position: relative;
+        }
+
+        /* DISPLAY SCREEN */
+        #display {
+            background-color: #34495e;
+            color: #fff;
+            width: 100%;
+            height: 100px; 
+            border-radius: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            box-sizing: border-box;
+            display: flex;
+            align-items: center; 
+            justify-content: flex-end; 
+            font-size: 2.5rem;
+            word-break: break-word; 
+            overflow: hidden; 
+            transition: all 0.3s ease;
+        }
+
+        /* SPECIAL JOKE MODE STYLE */
+        #display.joke-mode {
+            justify-content: center; 
+            text-align: center;      
+            font-size: 1.2rem;       
+            line-height: 1.4;        
+            color: #f1c40f;          
+            background-color: #2c3e50; 
+            padding: 5px;
+        }
+
+        /* Buttons Grid */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 15px; /* Added margin below buttons for the watermark */
+        }
+
+        button {
+            padding: 15px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #bdc3c7;
+            color: #2c3e50;
+            font-weight: bold;
+            box-shadow: 0 4px #95a5a6;
+            transition: all 0.1s;
+        }
+
+        button:active {
+            box-shadow: 0 0 #95a5a6;
+            transform: translateY(4px);
+        }
+
+        .operator {
+            background-color: #e67e22;
+            color: white;
+            box-shadow: 0 4px #d35400;
+        }
+        .operator:active {
+            box-shadow: 0 0 #d35400;
+        }
+
+        .equal {
+            grid-column: span 2;
+            background-color: #27ae60;
+            color: white;
+            box-shadow: 0 4px #2ecc71;
+        }
+        .equal:active {
+            box-shadow: 0 0 #2ecc71;
+        }
+
+        .clear {
+            background-color: #e74c3c;
+            color: white;
+            box-shadow: 0 4px #c0392b;
+        }
+        .clear:active {
+            box-shadow: 0 0 #c0392b;
+        }
+
+        /* --- WATERMARK STYLING --- */
+        .watermark {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #95a5a6; /* Subtle gray color */
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            user-select: none; /* Prevents text selection */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <div id="display">0</div>
+        
+        <div class="buttons">
+            <button class="clear" onclick="clearDisplay()">C</button>
+            <button class="operator" onclick="appendInput('/')">/</button>
+            <button class="operator" onclick="appendInput('*')">×</button>
+            <button class="operator" onclick="appendInput('-')">-</button>
+            
+            <button onclick="appendInput('7')">7</button>
+            <button onclick="appendInput('8')">8</button>
+            <button onclick="appendInput('9')">9</button>
+            <button class="operator" onclick="appendInput('+')">+</button>
+
+            <button onclick="appendInput('4')">4</button>
+            <button onclick="appendInput('5')">5</button>
+            <button onclick="appendInput('6')">6</button>
+            <button onclick="appendInput('.')">.</button>
+
+            <button onclick="appendInput('1')">1</button>
+            <button onclick="appendInput('2')">2</button>
+            <button onclick="appendInput('3')">3</button>
+            <button onclick="appendInput('0')">0</button>
+            
+            <button class="equal" onclick="calculate()">=</button>
+        </div>
+
+        <div class="watermark">Made by Anish</div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        let currentInput = '';
+        
+        function updateDisplay(value) {
+            display.innerText = value;
+        }
+
+        function clearDisplay() {
+            currentInput = '';
+            updateDisplay('0');
+            display.classList.remove('joke-mode');
+        }
+
+        function appendInput(value) {
+            if (display.classList.contains('joke-mode')) {
+                clearDisplay();
+            }
+
+            if (currentInput === '' && isNaN(value) && value !== '-') return;
+            
+            currentInput += value;
+            updateDisplay(currentInput);
+        }
+
+        function calculate() {
+            // Ensures the joke runs on EVERY calculation
+            const funMessage = "Tum ek kaam karo IAS ki taiyaari chhod do";
+            display.classList.add('joke-mode');
+            updateDisplay(funMessage);
+            currentInput = ''; 
+        }
+    </script>
+</body>
+</html>
